@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#16192B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SiteNeeds Admin">
+<link rel="apple-touch-icon" href="admin-icon-180.png">
+<link rel="icon" href="admin-icon-192.png">
+<link rel="manifest" href="admin.webmanifest">
+<title>SiteNeeds Admin</title>
+<style>
+:root{--bg:#F3F4F8;--card:#fff;--ink:#16192B;--sub:#646A80;--line:#E3E5EC;--brand:#1F4FD8;--ok:#1DA851;--warn:#B35C00;--danger:#D93636}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Noto Sans Arabic",sans-serif;font-size:16px;padding-bottom:40px}
+header{background:#16192B;color:#fff;padding:16px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:19px}
+header small{opacity:.7;font-size:12px}
+main{padding:12px;max-width:640px;margin:0 auto}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,25,60,.06)}
+.card h2{margin:0 0 10px;font-size:17px}
+label{display:block;font-size:13px;color:var(--sub);margin:12px 0 4px}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;background:#FAFBFD;color:inherit}
+textarea{min-height:76px}
+.ltr{direction:ltr;text-align:left}
+button{font:inherit;border:0;border-radius:12px;padding:13px;font-weight:700;width:100%;margin-top:12px;cursor:pointer}
+.b-main{background:var(--brand);color:#fff}
+.b-ok{background:var(--ok);color:#fff}
+.b-ghost{background:#EEF0F4;color:var(--ink)}
+.b-danger{background:#FFE3E3;color:var(--danger)}
+button:disabled{opacity:.5}
+.status{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;font-weight:700}
+.st-off{background:#FFF3E0;color:var(--warn)}
+.st-on{background:#E5F7EC;color:#137A3A}
+.mini{font-size:13px;color:var(--sub);line-height:1.5}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.kv{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.kv b{direction:ltr}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#16192B;color:#fff;padding:11px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.2s;pointer-events:none;max-width:90vw;text-align:center;z-index:9}
+.toast.show{opacity:1}
+a{color:var(--brand)}
+.hide{display:none}
+details.pros>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:17px}
+details.pros>summary::-webkit-details-marker{display:none}
+.pp{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}
+.pp img,.pp .ini{width:48px;height:48px;border-radius:12px;object-fit:cover;flex:none;background:#E4EBFF;display:grid;place-items:center;font-weight:800;color:var(--brand)}
+.pp .t{flex:1;min-width:0}.pp .t b{display:block}.pp .t span{font-size:12.5px;color:var(--sub);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pp button{width:auto;margin:0;padding:9px 10px;font-size:15px;flex:none}
+.pp.off img,.pp.off .ini,.pp.off .t{opacity:.45}
+#pPrev{width:96px;height:96px;border-radius:20px;object-fit:cover;background:#EEF0F4;display:block;margin:8px auto 0}
+</style>
+</head>
+<body>
+<header><h1>🛠️ إدارة SiteNeeds</h1><small>التحديثات والرسائل لكل المستخدمين</small></header>
+<main>
+
+<!-- تسجيل الدخول بالمفتاح -->
+<div class="card" id="login">
+  <h2>🔑 مفتاح الدخول</h2>
+  <div class="mini">الصق هنا مفتاح GitHub (Token) الخاص بك. يُحفظ على هذا الجهاز فقط ولا يُرسل لأي مكان آخر غير GitHub.</div>
+  <label>Token</label>
+  <input id="tok" class="ltr" type="password" placeholder="github_pat_…" autocomplete="off">
+  <button class="b-main" id="btnLogin">دخول</button>
+</div>
+
+<div id="panel" class="hide">
+
+  <!-- التحديث -->
+  <div class="card">
+    <h2>📦 التحديث</h2>
+    <div id="status" class="status"></div>
+    <div id="nextBox" class="hide" style="margin-top:10px;border:2px solid var(--ok);border-radius:12px;padding:12px">
+      <b>🆕 نسخة جديدة جاهزة: <span id="nxName" dir="ltr"></span></b>
+      <div class="mini">اكتب «ما الجديد» في الأسفل ثم اضغط إرسال.</div>
+      <button class="b-ok" id="btnNext">🚀 إرسال النسخة الجديدة للجميع</button>
+    </div>
+    <div id="liveBox" class="hide" style="margin-top:10px;border:2px solid #7A5CFF;border-radius:12px;padding:12px">
+      <b>⚡ تحديث صامت جاهز: <span id="lvName" dir="ltr"></span></b>
+      <div class="mini">يصل للجميع بهدوء في الخلفية ويظهر عند فتح التطبيق المرة القادمة — بدون رسالة وبدون تثبيت. للتغييرات الصغيرة (أيقونات، نصوص، قوائم، إصلاحات).</div>
+      <button style="background:#7A5CFF;color:#fff" id="btnLive">⚡ إرسال التحديث الصامت</button>
+    </div>
+    <div class="mini" id="lvCur" style="margin-top:6px"></div>
+    <div style="margin-top:10px">
+      <div class="kv"><span>النسخة</span><b id="vName">—</b></div>
+      <div class="kv"><span>رقم النسخة (versionCode)</span><b id="vCode">—</b></div>
+      <div class="kv"><span>ملف التحديث</span><b id="vApk" style="font-size:12px;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</b></div>
+    </div>
+    <label>ما الجديد (بالعربية)</label>
+    <textarea id="nAr" dir="rtl"></textarea>
+    <label>Novità (in italiano)</label>
+    <textarea id="nIt" class="ltr"></textarea>
+    <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:12px;color:var(--ink);font-size:15px"><span>🔒 تحديث إجباري (بدون زر «لاحقاً»)</span><input type="checkbox" id="force" style="width:22px;height:22px"></label>
+    <button class="b-ok" id="btnSend">🚀 إرسال التحديث للجميع</button>
+    <button class="b-ghost" id="btnStop">⏸️ إيقاف الإرسال</button>
+    <button class="b-ghost" id="btnNotes">💾 حفظ النص فقط</button>
+
+    <details style="margin-top:14px">
+      <summary class="mini" style="cursor:pointer">⚙️ متقدم: رابط تحديث مخصص</summary>
+      <div class="mini" style="margin-top:8px">استعمله فقط إذا كان عندك ملف APK في مكان آخر. يجب أن يكون رقم النسخة أكبر من الحالي، وأن يكون الملف موقّعاً بنفس مفتاح التطبيق، وإلا يفشل التثبيت.</div>
+      <label>رابط ملف APK</label>
+      <input id="cLink" class="ltr" placeholder="https://…/SiteNeeds.apk">
+      <div class="row">
+        <div><label>versionCode</label><input id="cCode" class="ltr" inputmode="numeric"></div>
+        <div><label>اسم النسخة</label><input id="cName" class="ltr" placeholder="1.0.12"></div>
+      </div>
+      <button class="b-main" id="btnCustom">🚀 إرسال هذا الرابط للجميع</button>
+    </details>
+  </div>
+
+  <!-- الرسالة -->
+  <div class="card">
+    <h2>📢 رسالة لكل المستخدمين</h2>
+    <div class="mini">تظهر مرة واحدة لكل شخص عند فتح التطبيق.</div>
+    <label>الرسالة بالعربية</label>
+    <textarea id="mAr" dir="rtl" placeholder="مثلاً: مرحباً بالجميع! …"></textarea>
+    <label>Messaggio in italiano</label>
+    <textarea id="mIt" class="ltr" placeholder="es. Ciao a tutti! …"></textarea>
+    <label>رابط (اختياري)</label>
+    <input id="mLink" class="ltr" placeholder="https://instagram.com/…">
+    <button class="b-main" id="btnMsg">📢 إرسال الرسالة</button>
+    <button class="b-danger" id="btnMsgDel">حذف الرسالة الحالية</button>
+    <div class="mini" id="mCur" style="margin-top:8px"></div>
+  </div>
+
+  <!-- المستخدمون -->
+  <div class="card">
+    <h2>👥 المستخدمون المسجّلون</h2>
+    <div id="uSetup">
+      <div class="mini">مرة واحدة فقط: الصق رابط السكربت (ينتهي بـ /exec) والمفتاح السري.</div>
+      <label>رابط السكربت</label><input id="sUrl" class="ltr" placeholder="https://script.google.com/macros/s/…/exec">
+      <label>المفتاح السري</label><input id="sKey" class="ltr" type="password">
+      <button class="b-main" id="btnLink">🔗 ربط التطبيق بالجدول</button>
+    </div>
+    <div id="uView" class="hide">
+      <div class="row" style="margin-bottom:6px">
+        <div class="status st-on" style="justify-content:center;flex-direction:column;gap:2px"><span id="uTot" style="font-size:24px">0</span><span class="mini">مسجّل</span></div>
+        <div class="status st-off" style="justify-content:center;flex-direction:column;gap:2px"><span id="uAct" style="font-size:24px">0</span><span class="mini">نشط آخر 7 أيام</span></div>
+      </div>
+      <div id="uCountries" class="mini" style="line-height:1.9;margin:8px 0"></div>
+      <input id="uQ" placeholder="🔍 ابحث بالاسم أو البلد أو المدينة…">
+      <details class="pros" id="uBox" style="margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:12px">
+        <summary style="font-size:15.5px"><span>📋 قائمة كل المسجّلين (<span id="uCnt">0</span>)</span><span class="mini">اضغط للفتح ▾</span></summary>
+        <div id="uList" style="margin-top:8px"></div>
+      </details>
+      <button class="b-ghost" id="btnUsers">🔄 تحديث القائمة</button>
+      <button class="b-ghost" id="btnUnlink" style="font-size:13px">تغيير رابط السكربت أو المفتاح</button>
+    </div>
+  </div>
+
+  <!-- مهنيون موثوقون -->
+  <div class="card">
+    <details class="pros" id="pBox">
+      <summary><span>🤝 مهنيون موثوقون (<span id="pCnt">0</span>)</span><span class="mini">اضغط للفتح ▾</span></summary>
+      <div class="mini" style="margin-top:8px">يظهرون عند كل المستخدمين في صفحة ⚙️ الإعدادات. 👁 = ظاهر للجميع (اضغط لإخفائه)، 🚫 = مخفي (اضغط لإظهاره)، ✏️ للتعديل، 🗑 للحذف.</div>
+      <div id="pList"></div>
+      <button class="b-main" id="pAdd">➕ إضافة شخص أو شركة</button>
+      <div id="pForm" class="hide" style="border:2px solid var(--brand);border-radius:14px;padding:12px;margin-top:12px">
+        <b id="pTitle">شخص جديد</b>
+        <img id="pPrev" alt="">
+        <label>الصورة أو اللوغو (اختياري)</label>
+        <input type="file" id="pPhoto" accept="image/*">
+        <button class="b-ghost" id="pNoPhoto" style="margin-top:6px;padding:9px">إزالة الصورة</button>
+        <label>الاسم *</label><input id="pName" dir="auto" placeholder="مثلاً: أحمد – شركة البناء">
+        <label>المهنة</label><input id="pJob" dir="auto" placeholder="كهربائي، بنّاء، سبّاك…">
+        <div class="row"><div><label>يظهر لمستخدمي</label><select id="pCC" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;background:#FAFBFD"><option value="IT">🇮🇹 إيطاليا فقط</option><option value="MA">🇲🇦 المغرب فقط</option><option value="ALL">🌍 كل البلدان</option></select></div><div><label>المدينة</label><input id="pCity" dir="auto" placeholder="الدار البيضاء"></div></div>
+        <label>الخدمات التي يقدّمها</label><textarea id="pServ" dir="auto" placeholder="تركيب كهرباء المنازل، لوحات، إنارة…"></textarea>
+        <label>رقم الهاتف / واتساب (مع رمز البلد)</label><input id="pPhone" class="ltr" inputmode="tel" placeholder="+212 6xx xxx xxx">
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font-size:15px"><span>👁 ظاهر للمستخدمين</span><input type="checkbox" id="pShow" style="width:22px;height:22px" checked></label>
+        <button class="b-ok" id="pSave">💾 حفظ ونشر للجميع</button>
+        <button class="b-ghost" id="pCancel">إلغاء</button>
+      </div>
+    </details>
+  </div>
+
+  <!-- روابط -->
+  <div class="card">
+    <h2>🔗 روابط سريعة</h2>
+    <div class="mini" style="line-height:2">
+      📊 <a href="https://talabmawad.goatcounter.com" target="_blank">الإحصائيات (GoatCounter)</a><br>
+      📱 <a href="https://siteneeds.net/" target="_blank">التطبيق للآيفون والآيباد</a><br>
+      🤖 <a href="https://siteneeds.net/SiteNeeds.apk" target="_blank">تحميل التطبيق للأندرويد</a>
+    </div>
+    <button class="b-ghost" id="btnReload">🔄 تحديث البيانات</button>
+    <button class="b-danger" id="btnLogout">خروج (حذف المفتاح من هذا الجهاز)</button>
+  </div>
+</div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+var OWNER='mohamed203055', REPO='lista-materiale-web', PATH='version.json';
+var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
+var $=function(s){return document.getElementById(s)};
+var TK='lm_admin_token', data=null, sha=null;
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show')},2800)}
+function token(){try{return localStorage.getItem(TK)||''}catch(e){return ''}}
+function b64dec(s){var bin=atob(s.replace(/\n/g,''));var u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
+function b64enc(str){var u=new TextEncoder().encode(str),bin='';for(var i=0;i<u.length;i++)bin+=String.fromCharCode(u[i]);return btoa(bin)}
+function gh(method,body){
+  return fetch(API+(method==='GET'?'?ref=main&t='+Date.now():''),{method:method,cache:'no-store',
+    headers:{'Authorization':'Bearer '+token(),'Accept':'application/vnd.github+json','Content-Type':'application/json'},
+    body:body?JSON.stringify(body):undefined}).then(function(r){
+      if(r.status===401||r.status===403) throw new Error('auth');
+      if(!r.ok) throw new Error('http '+r.status);
+      return r.json();
+    });
+}
+function load(){
+  return gh('GET').then(function(j){sha=j.sha;data=JSON.parse(b64dec(j.content));show()});
+}
+function save(msg){
+  var txt=JSON.stringify(data,null,1)+'\n';
+  return gh('PUT',{message:msg,content:b64enc(txt),sha:sha,branch:'main'}).then(function(j){sha=j.content.sha;show();toast('✓ تم — يظهر عند المستخدمين خلال 1-2 دقيقة')})
+    .catch(function(e){toast(e.message==='auth'?'المفتاح غير صالح أو منتهي':'خطأ: '+e.message);return load()});
+}
+function show(){
+  $('login').classList.add('hide');$('panel').classList.remove('hide');
+  var on=data.send!==false;
+  $('status').className='status '+(on?'st-on':'st-off');
+  $('status').textContent=on?'✅ التحديث مُرسَل — المستخدمون يرون رسالة التحديث':'⏸️ التحديث جاهز لكنه لم يُرسَل بعد';
+  $('vName').textContent=data.versionName||'—';$('vCode').textContent=data.versionCode||'—';$('vApk').textContent=data.apk||'—';
+  var src=data.next||data;
+  if(document.activeElement!==$('nAr'))$('nAr').value=src.notes_ar||'';
+  if(document.activeElement!==$('nIt'))$('nIt').value=src.notes_it||'';
+  $('nextBox').classList.toggle('hide',!data.next);
+  $('liveBox').classList.toggle('hide',!data.liveNext);
+  if(data.liveNext)$('lvName').textContent='⚡'+data.liveNext.ver;
+  $('lvCur').textContent=data.live&&data.live.ver?'⚡ آخر تحديث صامت مُرسل: '+data.live.ver:'';
+  if(data.next)$('nxName').textContent='v'+data.next.versionName;
+  var m=data.message||{};
+  $('mCur').textContent=m.id?('الرسالة الحالية (رقم '+m.id+'): '+(m.ar||m.it)):'لا توجد رسالة حالياً.';
+  $('btnSend').disabled=on;$('btnStop').disabled=!on;
+  $('force').checked=!!data.force;
+}
+function notes(){var t=data.next||data;t.notes_ar=$('nAr').value.trim();t.notes_it=$('nIt').value.trim()}
+$('btnLogin').onclick=function(){
+  var t=$('tok').value.trim(); if(!t){toast('الصق المفتاح أولاً');return}
+  try{localStorage.setItem(TK,t)}catch(e){}
+  load().then(function(){pGet().catch(function(){});return usersLoad()}).catch(function(e){toast(e.message==='auth'?'المفتاح غير صالح':'خطأ في الاتصال: '+e.message)});
+};
+$('btnSend').onclick=function(){if(!confirm('إرسال التحديث '+data.versionName+' لكل المستخدمين؟'))return;notes();data.send=true;data.force=$('force').checked;save('Invia aggiornamento '+data.versionName)};
+$('btnNext').onclick=function(){
+  if(!data.next)return;
+  if(!confirm('إرسال النسخة '+data.next.versionName+' لكل المستخدمين؟'))return;
+  notes(); var n=data.next; delete data.next;
+  data.versionCode=n.versionCode;data.versionName=n.versionName;data.apk=n.apk;data.notes_ar=n.notes_ar;data.notes_it=n.notes_it;
+  data.send=true;data.force=$('force').checked;save('Invia aggiornamento '+n.versionName);
+};
+$('btnLive').onclick=function(){
+  if(!data.liveNext)return;
+  if(!confirm('إرسال التحديث الصامت ⚡'+data.liveNext.ver+' لكل المستخدمين؟'))return;
+  data.live=data.liveNext; delete data.liveNext; save('Aggiornamento silenzioso '+data.live.ver);
+};
+$('btnStop').onclick=function(){data.send=false;save('Sospendi aggiornamento')};
+$('btnNotes').onclick=function(){notes();save('Note aggiornamento')};
+$('btnCustom').onclick=function(){
+  var l=$('cLink').value.trim(),c=parseInt($('cCode').value,10),n=$('cName').value.trim();
+  if(!/^https:\/\//.test(l)){toast('الرابط يجب أن يبدأ بـ https://');return}
+  if(!(c>(+data.versionCode||0))){toast('رقم النسخة يجب أن يكون أكبر من '+data.versionCode);return}
+  if(!confirm('إرسال هذا الرابط لكل المستخدمين؟'))return;
+  notes();data.apk=l;data.versionCode=c;data.versionName=n||('1.0.'+c);data.send=true;save('Aggiornamento con link personalizzato');
+};
+$('btnMsg').onclick=function(){
+  var ar=$('mAr').value.trim(),it=$('mIt').value.trim(),ln=$('mLink').value.trim();
+  if(!ar&&!it){toast('اكتب الرسالة أولاً');return}
+  if(!confirm('إرسال الرسالة لكل المستخدمين؟'))return;
+  data.message={id:String(Date.now()),ar:ar||it,it:it||ar,link:ln};
+  save('Nuovo messaggio').then(function(){$('mAr').value=$('mIt').value=$('mLink').value=''});
+};
+$('btnMsgDel').onclick=function(){data.message={id:'',ar:'',it:'',link:''};save('Rimuovi messaggio')};
+$('btnReload').onclick=function(){load().then(function(){toast('✓')})};
+$('force').onchange=function(){data.force=this.checked;save(this.checked?'Aggiornamento obbligatorio':'Aggiornamento facoltativo')};
+
+// ----- utenti registrati (foglio Google tramite Apps Script) -----
+var SU='lm_admin_script', SK='lm_admin_key', USERS=[];
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return ''}}
+function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function d(x){if(!x)return '—';var t=new Date(x);if(isNaN(t))return esc(x);function z(n){return (n<10?'0':'')+n}return z(t.getDate())+'/'+z(t.getMonth()+1)+'/'+t.getFullYear()}
+var JOB={dipendente:'يعمل عند شركة',proprio:'يعمل لحسابه',ditta:'صاحب شركة',altro:'عمل آخر'};
+var TRADE={ele:'⚡ كهربائي',edi:'🧱 بنّاء'};
+function jobTxt(l){var p=String(l||'').split('|');return (TRADE[p[1]||'ele']||p[1])+' · '+(JOB[p[0]]||p[0])}
+function usersShow(){
+  var q=$('uQ').value.trim().toLowerCase(), wk=Date.now()-7*864e5;
+  $('uTot').textContent=USERS.length;
+  $('uAct').textContent=USERS.filter(function(u){return new Date(u.ultimo).getTime()>wk}).length;
+  var by={};USERS.forEach(function(u){var c=u.paese||'?';by[c]=(by[c]||0)+1});
+  $('uCountries').innerHTML='🌍 '+Object.keys(by).sort(function(a,b){return by[b]-by[a]}).map(function(c){return '<b>'+esc(c)+'</b> '+by[c]}).join(' · ');
+  var list=USERS.filter(function(u){return !q||[u.nome,u.paese,u.citta,u.codice].join(' ').toLowerCase().indexOf(q)>=0})
+    .sort(function(a,b){return new Date(b.ultimo)-new Date(a.ultimo)});
+  $('uCnt').textContent=q?list.length+' / '+USERS.length:USERS.length;
+  if(q)$('uBox').open=true;
+  $('uList').innerHTML=list.map(function(u){
+    return '<div style="border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px">'+
+     '<div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(u.nome)+'</b><span class="mini" dir="ltr">'+esc(u.codice)+'</span></div>'+
+     '<div class="mini">📍 '+esc(u.paese)+(u.citta?' – '+esc(u.citta):'')+' · 👷 '+esc(jobTxt(u.lavoro))+'</div>'+
+     '<div class="mini">📅 سجّل: '+d(u.reg)+' · 👁 آخر دخول: '+d(u.ultimo)+' · 📆 أيام الاستعمال: <b>'+esc(u.giorni||1)+'</b></div>'+
+     '<div class="mini" dir="ltr" style="text-align:right">'+esc(u.dispositivo)+' · v'+esc(u.versione)+' · '+esc(u.lingua)+'</div></div>'}).join('')||'<div class="mini">لا يوجد مسجّلون بعد.</div>';
+}
+function usersLoad(){
+  var u=ls(SU),k=ls(SK); if(!u||!k) return Promise.resolve();
+  $('uSetup').classList.add('hide');$('uView').classList.remove('hide');
+  $('uList').innerHTML='<div class="mini">…</div>';
+  return fetch(u+'?key='+encodeURIComponent(k)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){
+    if(j.error){toast('المفتاح السري غير صحيح');$('uSetup').classList.remove('hide');$('uView').classList.add('hide');return}
+    USERS=j.users||[];usersShow();
+  }).catch(function(){$('uList').innerHTML='<div class="mini">تعذّر الاتصال بالجدول. تحقق من الرابط.</div>'});
+}
+$('uQ').oninput=usersShow;
+$('btnUsers').onclick=usersLoad;
+$('btnUnlink').onclick=function(){$('sUrl').value=ls(SU);$('sKey').value='';$('uSetup').classList.remove('hide');$('uView').classList.add('hide')};
+$('btnLink').onclick=function(){
+  var u=$('sUrl').value.trim(),k=$('sKey').value.trim();
+  if(!/^https:\/\/script\.google\.com\/.+\/exec$/.test(u)){toast('الرابط يجب أن ينتهي بـ /exec');return}
+  if(!k){toast('اكتب المفتاح السري');return}
+  ls(SU,u);ls(SK,k);
+  // l'app degli utenti legge l'indirizzo da version.json
+  if(data&&data.reg_url!==u){data.reg_url=u;save('Collega registro utenti')}
+  usersLoad();
+};
+// ----- professionisti consigliati: people.json nel repo web, versione in version.json (people_ver) -----
+var PAPI='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/people.json', PEOPLE=[], psha=null, pEdit=null, pPhotoData='';
+function pGet(){
+  return fetch(PAPI+'?ref=main&t='+Date.now(),{cache:'no-store',headers:{'Authorization':'Bearer '+token(),'Accept':'application/vnd.github+json'}}).then(function(r){
+    if(r.status===404){psha=null;PEOPLE=[];return}
+    if(!r.ok) throw new Error('http '+r.status);
+    return r.json().then(function(j){psha=j.sha;var d=JSON.parse(b64dec(j.content));PEOPLE=Array.isArray(d.people)?d.people:[]});
+  }).then(pShow);
+}
+function pPut(msg){
+  var body={message:msg,content:b64enc(JSON.stringify({people:PEOPLE},null,1)+'\n'),branch:'main'};if(psha)body.sha=psha;
+  return fetch(PAPI,{method:'PUT',headers:{'Authorization':'Bearer '+token(),'Accept':'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)})
+   .then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json()}).then(function(j){psha=j.content.sha;pShow();data.people_ver=String(Date.now());return save('Aggiorna professionisti')})
+   .catch(function(e){toast('خطأ: '+e.message);return pGet()});
+}
+function ccOf(t){t=String(t||'').toLowerCase();if(/ital|إيطال/.test(t))return 'IT';if(/maroc|morocc|المغرب/.test(t))return 'MA';return ''}
+var FLAG={IT:'🇮🇹 إيطاليا',MA:'🇲🇦 المغرب',ALL:'🌍 الكل'};
+function pShow(){
+  $('pCnt').textContent=PEOPLE.length;
+  $('pList').innerHTML=PEOPLE.map(function(p,i){
+    return '<div class="pp'+(p.hidden?' off':'')+'">'+(p.photo?'<img src="'+esc(p.photo)+'" alt="">':'<span class="ini">'+esc((p.name||'?').trim()[0]||'?')+'</span>')+
+     '<div class="t"><b>'+esc(p.name)+(p.hidden?' (مخفي)':'')+'</b><span>'+esc([FLAG[p.cc||ccOf(p.country)]||'❔',p.job,p.city].filter(Boolean).join(' · '))+'</span><span dir="ltr" style="text-align:right">'+esc(p.phone||'')+'</span></div>'+
+     (i>0?'<button class="b-ghost" data-pu="'+i+'">▲</button>':'')+'<button class="'+(p.hidden?'b-danger':'b-ok')+'" data-ph="'+i+'" title="'+(p.hidden?'مخفي — اضغط لإظهاره':'ظاهر — اضغط لإخفائه')+'">'+(p.hidden?'🚫':'👁')+'</button><button class="b-ghost" data-pe="'+i+'">✏️</button><button class="b-danger" data-pd="'+i+'">🗑</button></div>'}).join('')||'<div class="mini" style="margin-top:10px">لا يوجد أحد بعد.</div>';
+  $('pList').querySelectorAll('[data-ph]').forEach(function(b){b.onclick=function(){var p=PEOPLE[+b.dataset.ph];p.hidden=!p.hidden;toast(p.hidden?'🚫 «'+p.name+'» لم يعد يظهر للمستخدمين':'👁 «'+p.name+'» يظهر الآن للجميع');pPut(p.hidden?'Nascondi professionista':'Mostra professionista')}});
+  $('pList').querySelectorAll('[data-pe]').forEach(function(b){b.onclick=function(){pOpen(+b.dataset.pe)}});
+  $('pList').querySelectorAll('[data-pd]').forEach(function(b){b.onclick=function(){var p=PEOPLE[+b.dataset.pd];if(!confirm('حذف «'+p.name+'» من التطبيق عند الجميع؟'))return;PEOPLE.splice(+b.dataset.pd,1);pPut('Rimuovi professionista')}});
+  $('pList').querySelectorAll('[data-pu]').forEach(function(b){b.onclick=function(){var i=+b.dataset.pu,x=PEOPLE[i];PEOPLE[i]=PEOPLE[i-1];PEOPLE[i-1]=x;pPut('Ordina professionisti')}});
+}
+function pOpen(i){
+  pEdit=i; var p=i==null?{}:PEOPLE[i];
+  $('pTitle').textContent=i==null?'شخص جديد':'تعديل: '+p.name;
+  $('pName').value=p.name||'';$('pJob').value=p.job||'';$('pCC').value=p.cc||ccOf(p.country)||'IT';$('pCity').value=p.city||'';$('pServ').value=p.services||'';$('pPhone').value=p.phone||'';$('pShow').checked=!p.hidden;
+  pPhotoData=p.photo||'';$('pPrev').src=pPhotoData||'data:image/gif;base64,R0lGODlhAQABAAAAACw=';$('pPhoto').value='';
+  $('pForm').classList.remove('hide');$('pForm').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('pAdd').onclick=function(){pOpen(null)};
+$('pCancel').onclick=function(){$('pForm').classList.add('hide')};
+$('pNoPhoto').onclick=function(){pPhotoData='';$('pPrev').src='data:image/gif;base64,R0lGODlhAQABAAAAACw='};
+$('pPhoto').onchange=function(){
+  var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();
+  rd.onload=function(){var im=new Image();im.onload=function(){
+    var S=240,c=document.createElement('canvas');c.width=c.height=S;var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,S,S);
+    var k=Math.max(S/im.width,S/im.height),w=im.width*k,h=im.height*k;g.drawImage(im,(S-w)/2,(S-h)/2,w,h);
+    pPhotoData=c.toDataURL('image/jpeg',0.82);$('pPrev').src=pPhotoData};im.src=rd.result};
+  rd.readAsDataURL(f);
+};
+$('pSave').onclick=function(){
+  var n=$('pName').value.trim();if(!n){toast('اكتب الاسم أولاً');return}
+  var o=pEdit==null?{id:'p'+Date.now().toString(36)}:PEOPLE[pEdit];
+  o.name=n;o.job=$('pJob').value.trim();o.cc=$('pCC').value;o.country={IT:'Italia',MA:'Maroc',ALL:''}[o.cc];o.city=$('pCity').value.trim();o.services=$('pServ').value.trim();o.phone=$('pPhone').value.trim();o.photo=pPhotoData;o.hidden=!$('pShow').checked;
+  if(pEdit==null)PEOPLE.push(o);
+  $('pForm').classList.add('hide');pPut(pEdit==null?'Aggiungi professionista':'Modifica professionista');
+};
+$('btnLogout').onclick=function(){try{localStorage.removeItem(TK)}catch(e){};location.reload()};
+if(token()) load().then(function(){pGet().catch(function(){});return usersLoad()}).catch(function(){$('login').classList.remove('hide')});
+})();
+</script>
+</body>
+</html>

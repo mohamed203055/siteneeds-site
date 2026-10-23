@@ -1,0 +1,40 @@
+{
+ "send": true,
+ "versionCode": 59,
+ "versionName": "1.0.59",
+ "apk": "SiteNeeds-1.0.59.apk",
+ "notes_ar": "• الاسم الجديد SiteNeeds في كل مكان\n• الموقع الجديد siteneeds.net للتحميل والتحديثات\n• كل الإصلاحات الأخيرة",
+ "notes_it": "• Nuovo nome SiteNeeds ovunque\n• Nuovo sito siteneeds.net per download e aggiornamenti\n• Tutte le ultime correzioni",
+ "message": {
+  "id": "1792578568312",
+  "ar": "Chocolat Grazie per la prova",
+  "it": "Chocolat Grazie per la prova",
+  "link": ""
+ },
+ "force": true,
+ "packs": {
+  "MA": 1
+ },
+ "reg_url": "https://script.google.com/macros/s/AKfycbxSMJXn6I2P_hMa2Qh8r9tDIex6QCd8a9CZC0uOOTw9u8nXBEfaGvaDVoB5i1vegxDXkg/exec",
+ "people_ver": "1792692031166",
+ "live": {
+  "ver": "60",
+  "min": 41,
+  "files": {
+   "app.js": "2d0276eeda46545216a141ba56817cb537bdc245c462e6018d55b7fe556f573d",
+   "catalog.js": "49f53491d8bc8a2121c481f02fe9462b0355020a612a4745ab06909bc2a89b67",
+   "index.html": "e8b1fdd164cdefdd0615ef051f195a5d37dfb00165b9e91cc221c771fffb9b25",
+   "lang.js": "da8cc83f387785524f71e068f199b800a38ac28b863d0d79518af3c6f64588e3",
+   "packs.js": "5ac1da03fa078147607732a14812de5fffb228238a18e75fd2c78bfa02e36b63",
+   "trades.js": "c41a701019d504acacab4799938c861068c7799b88f3a449edaa9a0c8a5997e3"
+  },
+  "sig": "MEUCIQD9MDuVYqkm+5OXZRUpP2AUFRbCb994fLUI1LqtHP0ZYAIgbv57S83gYVUk4WVmmGf5Wbl3rXoMvbAVQVPZoE5mqLo="
+ },
+ "next": {
+  "versionCode": 60,
+  "versionName": "1.0.60",
+  "apk": "SiteNeeds-1.0.60.apk",
+  "notes_ar": "• الاسم الجديد SiteNeeds في كل مكان\n• الموقع الجديد siteneeds.net للتحميل والتحديثات\n• كل الإصلاحات الأخيرة",
+  "notes_it": "• Nuovo nome SiteNeeds ovunque\n• Nuovo sito siteneeds.net per download e aggiornamenti\n• Tutte le ultime correzioni"
+ }
+}
