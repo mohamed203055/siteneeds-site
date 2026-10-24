@@ -124,6 +124,11 @@ main{padding:12px 12px 0}
 .sheet.open{transform:none;visibility:visible}
 .sheet .grab{width:44px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 12px}
 .pwask{width:100%;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;font-weight:700}.pwask svg{flex:none}
+.ihint{position:fixed;left:0;right:0;bottom:0;z-index:200;padding:12px 12px calc(14px + env(safe-area-inset-bottom));pointer-events:none}
+.ihc{pointer-events:auto;background:var(--surface);color:var(--ink);border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.3);padding:16px;max-width:520px;margin:0 auto;border:2px solid var(--brand)}
+.ihc b{font-size:17px;display:block;margin-bottom:8px}.ihc ol{margin:0 0 10px;padding-inline-start:22px;line-height:1.9;font-size:15px}.ihc p{margin:0 0 10px;font-size:15px;line-height:1.6}
+.ihc .btn{width:100%;margin-top:6px;display:block;text-align:center;text-decoration:none}
+.iharr{pointer-events:none;text-align:center;color:var(--brand);font-size:26px;line-height:1;animation:ihb 1s infinite alternate}@keyframes ihb{to{transform:translateY(6px)}}
 .shead{position:sticky;top:-16px;z-index:3;margin:-16px -16px 8px;padding:8px 16px 6px;background:var(--surface);min-height:46px}
 .shead .grab{margin:2px auto 0}
 .sx,.sbk{position:absolute;top:6px;width:36px;height:36px;border-radius:50%;background:var(--ghost);color:var(--ink);font-size:17px;font-weight:700;display:grid;place-items:center}
@@ -269,7 +274,7 @@ main{padding:12px 12px 0}
 <input type="file" id="fileJson" accept="*/*" style="display:none">
 
 <script>window.LM_STATS=window.LM_STATS||"talabmawad";/* codice GoatCounter */</script>
-<script>window.LM_WEB_VERSION="web-1.0.60";window.LM_RELEASE=1</script>
+<script>window.LM_WEB_VERSION="web-1.0.62";window.LM_RELEASE=1</script>
 <script src="catalog.js"></script>
 <script src="packs.js"></script>
 <script src="trades.js"></script>

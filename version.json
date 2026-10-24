@@ -1,8 +1,8 @@
 {
  "send": true,
- "versionCode": 59,
- "versionName": "1.0.59",
- "apk": "SiteNeeds-1.0.59.apk",
+ "versionCode": 60,
+ "versionName": "1.0.60",
+ "apk": "SiteNeeds-1.0.60.apk",
  "notes_ar": "• الاسم الجديد SiteNeeds في كل مكان\n• الموقع الجديد siteneeds.net للتحميل والتحديثات\n• كل الإصلاحات الأخيرة",
  "notes_it": "• Nuovo nome SiteNeeds ovunque\n• Nuovo sito siteneeds.net per download e aggiornamenti\n• Tutte le ultime correzioni",
  "message": {
@@ -15,26 +15,19 @@
  "packs": {
   "MA": 1
  },
- "reg_url": "https://script.google.com/macros/s/AKfycbxSMJXn6I2P_hMa2Qh8r9tDIex6QCd8a9CZC0uOOTw9u8nXBEfaGvaDVoB5i1vegxDXkg/exec",
- "people_ver": "1792692031166",
+ "reg_url": "https://script.google.com/macros/s/AKfycbxSMJXn6I2P_hMa2Qh8r9tDIex6QCd8a9CZC0uOOTw9u8nXBEfaGvaDVoB5i1vegxDXkg/exec        المفتاح السري       🔗 ربط التطبيق بالجدول      🤝 مهنيون موثوقون (2)اضغط للفتح ▾ 🔗 روابط سريعة         📊 الإحصائيات (GoatCounter)        📱 التطبيق للآيفون والآيباد        🤖 تحميل التطبيق للأندرويد      🔄 تحديث البيانات     خروج (حذف المفتاح من هذا الجهاز)    الرابط يجب أن ينتهي بـ /exec",
+ "people_ver": "1792767417210",
  "live": {
-  "ver": "60",
+  "ver": "62",
   "min": 41,
   "files": {
-   "app.js": "2d0276eeda46545216a141ba56817cb537bdc245c462e6018d55b7fe556f573d",
-   "catalog.js": "49f53491d8bc8a2121c481f02fe9462b0355020a612a4745ab06909bc2a89b67",
-   "index.html": "e8b1fdd164cdefdd0615ef051f195a5d37dfb00165b9e91cc221c771fffb9b25",
-   "lang.js": "da8cc83f387785524f71e068f199b800a38ac28b863d0d79518af3c6f64588e3",
-   "packs.js": "5ac1da03fa078147607732a14812de5fffb228238a18e75fd2c78bfa02e36b63",
-   "trades.js": "c41a701019d504acacab4799938c861068c7799b88f3a449edaa9a0c8a5997e3"
+   "app.js": "babfef28f1514ebaa2f0c78f06d7902e9af54c18ef0b161e08cbdfaadc8f961e",
+   "catalog.js": "b9c74af5ab03f941d9ec4044bf3239efc7c9c746a7a89fbe9ec0befe033a0a32",
+   "index.html": "3378d038bc1e63f30c84de45beca63555d43ba08ea65c0e6bdd7119ab03f4973",
+   "lang.js": "245afed4a4305585c486fde0b6e79153c9cda665061f415e5c58a88bc556238a",
+   "packs.js": "387ef3da9659f69a1643bf87b82425e513757f056a6ad97bc605938235c2f066",
+   "trades.js": "b5cfe5e71f1ca7a698fa58eea71204958196c313fb4bfe723212ac286397eb7f"
   },
-  "sig": "MEUCIQD9MDuVYqkm+5OXZRUpP2AUFRbCb994fLUI1LqtHP0ZYAIgbv57S83gYVUk4WVmmGf5Wbl3rXoMvbAVQVPZoE5mqLo="
- },
- "next": {
-  "versionCode": 60,
-  "versionName": "1.0.60",
-  "apk": "SiteNeeds-1.0.60.apk",
-  "notes_ar": "• الاسم الجديد SiteNeeds في كل مكان\n• الموقع الجديد siteneeds.net للتحميل والتحديثات\n• كل الإصلاحات الأخيرة",
-  "notes_it": "• Nuovo nome SiteNeeds ovunque\n• Nuovo sito siteneeds.net per download e aggiornamenti\n• Tutte le ultime correzioni"
+  "sig": "MEUCIBnQ2f2voPLDEmU4fjMKfyxY3BoKg7gsb0EyUi5u64ysAiEA641qjzbXPTgGwHKW/VSe1kxXd2TQ2dxfM1POF4qeZvI="
  }
 }
