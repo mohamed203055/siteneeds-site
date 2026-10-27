@@ -166,7 +166,7 @@ details.pros>summary::-webkit-details-marker{display:none}
         <button class="b-ghost" id="pNoPhoto" style="margin-top:6px;padding:9px">إزالة الصورة</button>
         <label>الاسم *</label><input id="pName" dir="auto" placeholder="مثلاً: أحمد – شركة البناء">
         <label>المهنة</label><input id="pJob" dir="auto" placeholder="كهربائي، بنّاء، سبّاك…">
-        <div class="row"><div><label>يظهر لمستخدمي</label><select id="pCC" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;background:#FAFBFD"><option value="IT">🇮🇹 إيطاليا فقط</option><option value="MA">🇲🇦 المغرب فقط</option><option value="ALL">🌍 كل البلدان</option></select></div><div><label>المدينة</label><input id="pCity" dir="auto" placeholder="الدار البيضاء"></div></div>
+        <div class="row"><div><label>يظهر لمستخدمي</label><select id="pCC" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;background:#FAFBFD"><option value="IT">🇮🇹 إيطاليا فقط</option><option value="MA">🇲🇦 المغرب فقط</option><option value="FR">🇫🇷 فرنسا فقط</option><option value="ALL">🌍 كل البلدان</option></select></div><div><label>المدينة</label><input id="pCity" dir="auto" placeholder="الدار البيضاء"></div></div>
         <label>الخدمات التي يقدّمها</label><textarea id="pServ" dir="auto" placeholder="تركيب كهرباء المنازل، لوحات، إنارة…"></textarea>
         <label>رقم الهاتف / واتساب (مع رمز البلد)</label><input id="pPhone" class="ltr" inputmode="tel" placeholder="+212 6xx xxx xxx">
         <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font-size:15px"><span>👁 ظاهر للمستخدمين</span><input type="checkbox" id="pShow" style="width:22px;height:22px" checked></label>
@@ -283,7 +283,7 @@ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';if(v===
 function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function d(x){if(!x)return '—';var t=new Date(x);if(isNaN(t))return esc(x);function z(n){return (n<10?'0':'')+n}return z(t.getDate())+'/'+z(t.getMonth()+1)+'/'+t.getFullYear()}
 var JOB={dipendente:'يعمل عند شركة',proprio:'يعمل لحسابه',ditta:'صاحب شركة',altro:'عمل آخر'};
-var TRADE={ele:'⚡ كهربائي',edi:'🧱 بنّاء'};
+var TRADE={ele:'⚡ كهربائي',edi:'🧱 بنّاء',idr:'🔧 سبّاك'};
 function jobTxt(l){var p=String(l||'').split('|');return (TRADE[p[1]||'ele']||p[1])+' · '+(JOB[p[0]]||p[0])}
 function usersShow(){
   var q=$('uQ').value.trim().toLowerCase(), wk=Date.now()-7*864e5;
@@ -297,11 +297,22 @@ function usersShow(){
   if(q)$('uBox').open=true;
   $('uList').innerHTML=list.map(function(u){
     return '<div style="border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px">'+
-     '<div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(u.nome)+'</b><span class="mini" dir="ltr">'+esc(u.codice)+'</span></div>'+
+     '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>'+esc(u.nome)+'</b><span style="display:flex;gap:8px;align-items:center"><span class="mini" dir="ltr">'+esc(u.codice)+'</span><button class="udel" data-udel="'+esc(u.codice)+'" data-un="'+esc(u.nome)+'" title="حذف" style="border:0;background:#FDECEC;color:#C62828;border-radius:10px;padding:6px 10px;font-size:15px">🗑</button></span></div>'+
      '<div class="mini">📍 '+esc(u.paese)+(u.citta?' – '+esc(u.citta):'')+' · 👷 '+esc(jobTxt(u.lavoro))+'</div>'+
      '<div class="mini">📅 سجّل: '+d(u.reg)+' · 👁 آخر دخول: '+d(u.ultimo)+' · 📆 أيام الاستعمال: <b>'+esc(u.giorni||1)+'</b></div>'+
      '<div class="mini" dir="ltr" style="text-align:right">'+esc(u.dispositivo)+' · v'+esc(u.versione)+' · '+esc(u.lingua)+'</div></div>'}).join('')||'<div class="mini">لا يوجد مسجّلون بعد.</div>';
 }
+document.addEventListener('click',function(ev){
+  var b=ev.target.closest&&ev.target.closest('[data-udel]'); if(!b) return;
+  var u=ls(SU),k=ls(SK),c=b.dataset.udel; if(!u||!k||!c) return;
+  if(!confirm('حذف «'+b.dataset.un+'» من قائمة المسجّلين؟')) return;
+  b.disabled=true;
+  fetch(u+'?key='+encodeURIComponent(k)+'&del='+encodeURIComponent(c)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){
+    if(j.error){toast('المفتاح السري غير صحيح');b.disabled=false;return}
+    if(j.deleted===undefined){toast('حدّث كود السكربت أولاً (نسخة جديدة)');b.disabled=false;return}
+    USERS=USERS.filter(function(x){return String(x.codice)!==c});usersShow();toast('تم الحذف ✓');
+  }).catch(function(){toast('تعذّر الحذف');b.disabled=false});
+});
 function usersLoad(){
   var u=ls(SU),k=ls(SK); if(!u||!k) return Promise.resolve();
   $('uSetup').classList.add('hide');$('uView').classList.remove('hide');
@@ -338,8 +349,8 @@ function pPut(msg){
    .then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json()}).then(function(j){psha=j.content.sha;pShow();data.people_ver=String(Date.now());return save('Aggiorna professionisti')})
    .catch(function(e){toast('خطأ: '+e.message);return pGet()});
 }
-function ccOf(t){t=String(t||'').toLowerCase();if(/ital|إيطال/.test(t))return 'IT';if(/maroc|morocc|المغرب/.test(t))return 'MA';return ''}
-var FLAG={IT:'🇮🇹 إيطاليا',MA:'🇲🇦 المغرب',ALL:'🌍 الكل'};
+function ccOf(t){t=String(t||'').toLowerCase();if(/ital|إيطال/.test(t))return 'IT';if(/maroc|morocc|المغرب/.test(t))return 'MA';if(/fran|فرنس/.test(t))return 'FR';return ''}
+var FLAG={IT:'🇮🇹 إيطاليا',MA:'🇲🇦 المغرب',FR:'🇫🇷 فرنسا',ALL:'🌍 الكل'};
 function pShow(){
   $('pCnt').textContent=PEOPLE.length;
   $('pList').innerHTML=PEOPLE.map(function(p,i){
