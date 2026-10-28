@@ -51,6 +51,10 @@ details.pros>summary::-webkit-details-marker{display:none}
 .pp .t{flex:1;min-width:0}.pp .t b{display:block}.pp .t span{font-size:12.5px;color:var(--sub);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pp button{width:auto;margin:0;padding:9px 10px;font-size:15px;flex:none}
 .pp.off img,.pp.off .ini,.pp.off .t{opacity:.45}
+.sel{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;background:#FAFBFD}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:6px;font-size:15px}.sw input{width:22px;height:22px}
+.ci{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:8px 2px;font-size:14px}.ci .t{flex:1;min-width:0}.ci .t small{display:block;color:var(--sub);font-size:12px}.ci button{width:auto;margin:0;padding:7px 10px;font-size:14px;flex:none}.ci.del .t{opacity:.45;text-decoration:line-through}.ci.mod .t b{color:var(--brand)}
+.cg{font-weight:800;margin:12px 0 2px;font-size:14px}
 #pPrev{width:96px;height:96px;border-radius:20px;object-fit:cover;background:#EEF0F4;display:block;margin:8px auto 0}
 </style>
 </head>
@@ -149,6 +153,36 @@ details.pros>summary::-webkit-details-marker{display:none}
       <button class="b-ghost" id="btnUsers">🔄 تحديث القائمة</button>
       <button class="b-ghost" id="btnUnlink" style="font-size:13px">تغيير رابط السكربت أو المفتاح</button>
     </div>
+  </div>
+
+  <!-- لوحة التحكم -->
+  <div class="card">
+    <details class="pros" id="cBox">
+      <summary><span>🎛️ لوحة التحكم</span><span class="mini">اضغط للفتح ▾</span></summary>
+      <div class="mini" style="margin-top:8px">كل ما تغيّره هنا يصل لكل المستخدمين خلال دقائق، بدون تحديث.</div>
+      <h3 style="font-size:15px;margin:14px 0 6px">⚙️ تشغيل / إيقاف</h3>
+      <div id="fList"></div>
+      <button class="b-ok" id="fSave">💾 حفظ ونشر للجميع</button>
+      <h3 style="font-size:15px;margin:18px 0 6px">📦 تعديل القطع للجميع</h3>
+      <div class="mini">احذف أي قطعة، عدّل اسمها أو مقاساتها، أو أضف قطعة جديدة. 🗑 = حذف من التطبيق، ↩️ = إرجاعها.</div>
+      <label>القائمة</label>
+      <select id="cCat" class="sel"><option value="ele_IT">⚡ كهربائي — 🇮🇹 إيطاليا</option><option value="ele_MA">⚡ كهربائي — 🇲🇦 المغرب و 🇫🇷 فرنسا</option><option value="edi_IT">🧱 بناء — 🇮🇹 إيطاليا</option><option value="edi_MA">🧱 بناء — 🇲🇦 المغرب و 🇫🇷 فرنسا</option></select>
+      <input id="cQ" dir="auto" placeholder="🔍 ابحث عن قطعة…" style="margin-top:8px">
+      <div id="cList" style="margin-top:8px"></div>
+      <div id="cForm" class="hide" style="border:2px solid var(--brand);border-radius:14px;padding:12px;margin-top:12px">
+        <b id="cTitle">تعديل</b>
+        <label>القسم</label><select id="cfCat" class="sel"></select>
+        <label>الاسم بالإيطالية</label><input id="cfIt" dir="auto">
+        <label>الاسم بالعربية</label><input id="cfAr" dir="auto">
+        <label>الاسم بالفرنسية (للمغرب وفرنسا)</label><input id="cfFr" dir="auto">
+        <label>الوحدة</label><select id="cfUnit" class="sel"></select>
+        <label>المقاسات (افصل بينها بـ ; )</label><input id="cfSizes" class="ltr" placeholder="1.5 mm²;2.5 mm²;4 mm²">
+        <button class="b-ok" id="cfSave">💾 حفظ ونشر للجميع</button>
+        <button class="b-ghost" id="cfReset">↩️ إرجاع الأصل</button>
+        <button class="b-ghost" id="cfCancel">إلغاء</button>
+      </div>
+      <div id="cSave" class="hide"><button class="b-ok" id="cPub">💾 نشر التغييرات للجميع (<span id="cN">0</span>)</button></div>
+    </details>
   </div>
 
   <!-- مهنيون موثوقون -->
@@ -334,6 +368,78 @@ $('btnLink').onclick=function(){
   if(data&&data.reg_url!==u){data.reg_url=u;save('Collega registro utenti')}
   usersLoad();
 };
+
+// ----- لوحة التحكم: data.rc = {flags, over, add} in version.json -----
+var FLAGS=[['photos','🖼️ صور القطع'],['prices','💶 قسم الأسعار'],['calc','🧮 الحاسبة'],['pros','🤝 المهنيون الموثوقون'],['share','📤 زر «أرسل التطبيق لصديق»'],['install','📲 دليل التثبيت على الآيفون'],['edi','🧱 حرفة البناء'],['MA','🇲🇦 المغرب'],['FR','🇫🇷 فرنسا']];
+function rc(){if(!data.rc)data.rc={};var r=data.rc;r.flags=r.flags||{};r.over=r.over||{};r.add=r.add||{};return r}
+function fShow(){var r=rc();$('fList').innerHTML=FLAGS.map(function(f){return '<label class="sw"><span>'+f[1]+'</span><input type="checkbox" data-fl="'+f[0]+'"'+(r.flags[f[0]]===false?'':' checked')+'></label>'}).join('')}
+$('fSave').onclick=function(){var r=rc();document.querySelectorAll('[data-fl]').forEach(function(c){if(c.checked)delete r.flags[c.dataset.fl];else r.flags[c.dataset.fl]=false});save('لوحة التحكم: تشغيل/إيقاف')};
+var CATS_LOADED=null, cEdit=null, cDirty=0;
+function loadCats(){
+  if(CATS_LOADED) return CATS_LOADED;
+  CATS_LOADED=Promise.all(['catalog.js','packs.js','trades.js'].map(function(f){return new Promise(function(ok,ko){var sc=document.createElement('script');sc.src=f+'?t='+Date.now();sc.onload=ok;sc.onerror=ko;document.head.appendChild(sc)})}));
+  return CATS_LOADED;
+}
+function catalog(key){
+  var t=key.split('_')[0], cc=key.split('_')[1];
+  if(t==='ele'&&cc==='IT') return (window.CATEGORIES||[]).map(function(c){return {id:c.id,it:c.it,ar:c.ar,items:c.items.trim().split('\n').map(function(l,ix){var p=l.split('|');if(p.length<3)return null;return {id:c.id+'_'+ix,it:p[0].trim(),ar:p[1].trim(),unit:p[2].trim(),sizes:(p[3]||'').split(';').map(function(x){return x.trim()}).filter(Boolean)}}).filter(Boolean)}});
+  if(t==='ele') return ((window.LM_PACKS||{}).MA||{cats:[]}).cats;
+  var tr=(window.LM_TRADES||{})[t]; return tr&&tr.packs[cc]?tr.packs[cc].cats:[];
+}
+function nm(i){return i.ar||i.it||i.fr}
+function cShow(){
+  var key=$('cCat').value, r=rc(), q=$('cQ').value.trim().toLowerCase(), adds=r.add[key]||[], h='';
+  catalog(key).forEach(function(c){
+    var items=c.items.concat(adds.filter(function(a){return a.cat===c.id}).map(function(a){return Object.assign({_new:1},a)}));
+    var rows=items.filter(function(i){return !q||[i.it,i.ar,i.fr].join(' ').toLowerCase().indexOf(q)>=0}).map(function(i){
+      var o=r.over[i.id]||{}, del=!!o.del, mod=!del&&Object.keys(o).length>0, v=Object.assign({},i,o);
+      return '<div class="ci'+(del?' del':'')+(mod?' mod':'')+'"><div class="t"><b>'+(i._new?'🆕 ':'')+esc(nm(v))+'</b><small dir="auto">'+esc(v.it||v.fr||'')+(v.sizes&&v.sizes.length?' · '+esc(v.sizes.join(' · ')):'')+'</small></div>'+
+        (del?'<button class="b-ghost" data-cun="'+esc(i.id)+'">↩️</button>':'<button class="b-ghost" data-ced="'+esc(i.id)+'" data-cc="'+esc(c.id)+'">✏️</button><button class="b-danger" data-cdel="'+esc(i.id)+'"'+(i._new?' data-new="1"':'')+'>🗑</button>')+'</div>'}).join('');
+    if(rows||!q) h+='<div class="cg">'+esc((c.ic||'')+' '+(c.ar||c.it))+'</div>'+rows+(q?'':'<button class="b-ghost" data-cadd="'+esc(c.id)+'" style="padding:8px;margin-top:6px;font-size:14px">➕ قطعة جديدة في هذا القسم</button>');
+  });
+  $('cList').innerHTML=h||'<div class="mini">لا توجد نتائج.</div>';
+  $('cN').textContent=cDirty;$('cSave').classList.toggle('hide',!cDirty);
+}
+function findItem(key,id){var r=rc(),f=null;catalog(key).forEach(function(c){c.items.forEach(function(i){if(i.id===id)f={i:i,cat:c.id}})});(r.add[key]||[]).forEach(function(a){if(a.id===id)f={i:a,cat:a.cat,isNew:1}});return f}
+function cOpen(id,catId){
+  var key=$('cCat').value, r=rc(), f=id?findItem(key,id):null, base=f?f.i:{it:'',ar:'',fr:'',unit:'pz',sizes:[]}, v=Object.assign({},base,(id&&r.over[id])||{});
+  cEdit={id:id,isNew:!f||f.isNew,cat:f?f.cat:catId};
+  $('cTitle').textContent=id?'✏️ '+nm(v):'➕ قطعة جديدة';
+  $('cfCat').innerHTML=catalog(key).map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.ar||c.it)+'</option>'}).join('');$('cfCat').value=cEdit.cat;
+  $('cfCat').disabled=!!(id&&!cEdit.isNew);
+  $('cfUnit').innerHTML=Object.keys(window.UNITS||{pz:1,m:1}).map(function(u){var x=(window.UNITS||{})[u]||{};return '<option value="'+u+'">'+esc((x.ar||u)+' ('+(x.it||u)+')')+'</option>'}).join('');
+  $('cfIt').value=v.it||'';$('cfAr').value=v.ar||'';$('cfFr').value=v.fr||'';$('cfUnit').value=v.unit||'pz';$('cfSizes').value=(v.sizes||[]).join(';');
+  $('cfReset').classList.toggle('hide',!(id&&!cEdit.isNew&&r.over[id]));
+  $('cForm').classList.remove('hide');$('cForm').scrollIntoView({behavior:'smooth',block:'center'});
+}
+$('cfCancel').onclick=function(){$('cForm').classList.add('hide');cEdit=null};
+$('cfSave').onclick=function(){
+  var key=$('cCat').value, r=rc(), it=$('cfIt').value.trim(), ar=$('cfAr').value.trim(), fr=$('cfFr').value.trim();
+  if(!it&&!ar&&!fr){toast('اكتب اسم القطعة');return}
+  var val={it:it||fr||ar,ar:ar||it||fr,fr:fr,unit:$('cfUnit').value,sizes:$('cfSizes').value.split(';').map(function(x){return x.trim()}).filter(Boolean)};
+  if(cEdit.isNew){
+    var list=r.add[key]=r.add[key]||[];
+    if(cEdit.id){var a=list.find(function(x){return x.id===cEdit.id});Object.assign(a,val,{cat:$('cfCat').value})}
+    else list.push(Object.assign({id:'rc_'+Date.now().toString(36),cat:$('cfCat').value},val));
+  } else {
+    var b=findItem(key,cEdit.id).i, o={};
+    ['it','ar','fr','unit'].forEach(function(k){if((val[k]||'')!==(b[k]||''))o[k]=val[k]});
+    if(val.sizes.join(';')!==(b.sizes||[]).join(';'))o.sizes=val.sizes;
+    if(Object.keys(o).length)r.over[cEdit.id]=o;else delete r.over[cEdit.id];
+  }
+  $('cForm').classList.add('hide');cEdit=null;cDirty=0;save('لوحة التحكم: تعديل قطعة').then(cShow);
+};
+$('cfReset').onclick=function(){if(!cEdit)return;delete rc().over[cEdit.id];$('cForm').classList.add('hide');save('لوحة التحكم: إرجاع قطعة').then(cShow)};
+$('cList').onclick=function(ev){
+  var b=ev.target.closest('button');if(!b)return; var r=rc(), key=$('cCat').value;
+  if(b.dataset.ced) cOpen(b.dataset.ced,b.dataset.cc);
+  else if(b.dataset.cadd) cOpen(null,b.dataset.cadd);
+  else if(b.dataset.cdel){ if(b.dataset.new){if(!confirm('حذف هذه القطعة الجديدة نهائياً؟'))return;r.add[key]=(r.add[key]||[]).filter(function(a){return a.id!==b.dataset.cdel})} else r.over[b.dataset.cdel]={del:1}; cDirty++; cShow(); }
+  else if(b.dataset.cun){ delete r.over[b.dataset.cun]; cDirty++; cShow(); }
+};
+$('cPub').onclick=function(){cDirty=0;save('لوحة التحكم: حذف/إرجاع قطع').then(cShow)};
+$('cCat').onchange=cShow; $('cQ').oninput=cShow;
+$('cBox').addEventListener('toggle',function(){if(!$('cBox').open||!data)return;fShow();$('cList').innerHTML='<div class="mini">…</div>';loadCats().then(cShow).catch(function(){$('cList').innerHTML='<div class="mini">تعذّر تحميل القائمة.</div>'})});
 // ----- professionisti consigliati: people.json nel repo web, versione in version.json (people_ver) -----
 var PAPI='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/people.json', PEOPLE=[], psha=null, pEdit=null, pPhotoData='';
 function pGet(){
