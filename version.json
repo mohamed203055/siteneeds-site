@@ -1,10 +1,10 @@
 {
  "send": true,
- "versionCode": 60,
- "versionName": "1.0.60",
- "apk": "SiteNeeds-1.0.60.apk",
- "notes_ar": "• الاسم الجديد SiteNeeds في كل مكان\n• الموقع الجديد siteneeds.net للتحميل والتحديثات\n• كل الإصلاحات الأخيرة",
- "notes_it": "• Nuovo nome SiteNeeds ovunque\n• Nuovo sito siteneeds.net per download e aggiornamenti\n• Tutte le ultime correzioni",
+ "versionCode": 68,
+ "versionName": "1.0.68",
+ "apk": "SiteNeeds-1.0.68.apk",
+ "notes_ar": "• تصميم جديد احترافي مع أيقونات ثلاثية الأبعاد\n• أيقونة وشعار جديدان\n• قائمة يدوية على شكل ورقة\n• PDF احترافي بشعارك\n• صور القطع",
+ "notes_it": "• Nuovo design professionale con icone 3D\n• Nuova icona e logo\n• Lista a mano in stile foglio\n• PDF professionale con il tuo logo\n• Foto dei pezzi",
  "message": {
   "id": "1792578568312",
   "ar": "Chocolat Grazie per la prova",
@@ -19,16 +19,21 @@
  "reg_url": "https://script.google.com/macros/s/AKfycbxSMJXn6I2P_hMa2Qh8r9tDIex6QCd8a9CZC0uOOTw9u8nXBEfaGvaDVoB5i1vegxDXkg/exec",
  "people_ver": "1792767417210",
  "live": {
-  "ver": "64",
+  "ver": "68",
   "min": 41,
   "files": {
-   "app.js": "e31240fd487112922833f805f5c807c94334638531fcabe8caa41cf75e8f38c3",
-   "catalog.js": "e6b2c5d83b47849bb43c742490e920ed037a48680f5388f94ae0db91dbee3002",
-   "index.html": "fb19ce82de259647c2b80640d76bfdf2967f2dad7c75498070c143a83fd50218",
-   "lang.js": "1519763e58d65d3889ba6f90c031966102daec97d9bd5a6b8a66d898ac9aec2d",
-   "packs.js": "ba65df8c16683f033d265545afcc28e8c7fe043f7d1fc018eb08417b2811533c",
-   "trades.js": "5746ac68c1dda623597b7f0cac6c5c686d53b8d1f193b49082a034148907a73e"
+   "app.js": "be23459014d69ccffac8d7f1d67efedb55e7a6b599d237363bad5e4809135cff",
+   "catalog.js": "e87900457354a156dd1cee5dea488c173437456bacd9b3235205cdea36cf0552",
+   "index.html": "4f9762124f31e9204d54d97ff62fc750a30bf27122a0a5169122d4c1d7749a3b",
+   "lang.js": "40d207245b1ad5a09aef03a5a170d7a0fa7ff5734c532fd193982472ccd11324",
+   "packs.js": "83e4c8bbf6d72e759b3a359a684a3c1766f0e7686983eca1b09614d7166e94d3",
+   "trades.js": "4adfa8efc9c3bdda2273850ab3226cc0be4e91693e724920eed9d22d4b37742e"
   },
-  "sig": "MEYCIQDu0+5xP7hpH1NWuVDS2vJqkDtVJrIaLWxhmOe1AuDZVAIhAJtXSbN6JAFwQSxuRUPSzd+vAXTqVL+/a5TYe9Wd33A9"
+  "sig": "MEQCIC6/BOIpTSLCyW4tuGOGbpaIWekgaOzVbqzTRhJWH/8SAiBhLAr42JseIxwBpNKTAgEW1/1jk1OenWL8qaOvmAOPzg=="
+ },
+ "rc": {
+  "flags": {},
+  "over": {},
+  "add": {}
  }
 }
