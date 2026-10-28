@@ -305,6 +305,14 @@ img.i3{width:1.4em;height:1.4em;vertical-align:middle;object-fit:contain}
 .addown img.i3{width:30px;height:30px}
 .sec{font-size:16px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
 .pcard>img:first-child,.pcard>span:first-child{margin:0 auto 6px;width:64px!important;height:64px!important;border-radius:50%!important}
+.mlcard{display:flex;align-items:center;gap:12px;width:100%;background:var(--card);border-radius:20px;box-shadow:0 2px 12px var(--shadow);padding:12px 14px;margin-top:12px;text-align:start;border:2px solid var(--brand-soft)}
+.mlcard img.i3{width:44px;height:44px;flex:none}.mlcard span{flex:1;min-width:0}.mlcard b{display:block;font-size:15.5px}.mlcard small{color:var(--sub);font-size:12.5px}.mlcard i{font-style:normal;color:var(--brand);font-size:22px;font-weight:800}
+.mlrow{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.mlrow input,.mlrow select{border:1px solid var(--line);border-radius:10px;padding:10px 8px;background:var(--field);font:inherit;color:inherit;min-width:0}
+.mln{flex:1}.mln,.mltxt textarea{unicode-bidi:plaintext}.mlq{width:62px;text-align:center;direction:ltr}.mlu{width:84px}
+.mldel{width:34px;height:40px;color:var(--danger);font-size:16px;flex:none}
+.mltxt{margin-top:12px}.mltxt summary{color:var(--brand);font-weight:700;cursor:pointer;padding:6px 0}
+.mltxt textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--field);margin-top:6px}
 /* splash */
 .splash{position:fixed;inset:0;z-index:300;background:radial-gradient(120% 80% at 50% 20%,#1B3A8C 0%,#0B1530 55%,#060B1A 100%);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .45s ease}
 .splash.off{opacity:0}
@@ -391,7 +399,7 @@ img.i3{width:1.4em;height:1.4em;vertical-align:middle;object-fit:contain}
 <input type="file" id="fileJson" accept="*/*" style="display:none">
 
 <script>window.LM_STATS=window.LM_STATS||"talabmawad";/* codice GoatCounter */</script>
-<script>window.LM_WEB_VERSION="web-1.0.65";window.LM_RELEASE=1</script>
+<script>window.LM_WEB_VERSION="web-1.0.66";window.LM_RELEASE=1</script>
 <script src="catalog.js"></script>
 <script src="packs.js"></script>
 <script src="trades.js"></script>
