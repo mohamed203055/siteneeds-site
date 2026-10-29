@@ -370,7 +370,7 @@ $('btnLink').onclick=function(){
 };
 
 // ----- لوحة التحكم: data.rc = {flags, over, add} in version.json -----
-var FLAGS=[['photos','🖼️ صور القطع'],['prices','💶 قسم الأسعار'],['calc','🧮 الحاسبة'],['pros','🤝 المهنيون الموثوقون'],['share','📤 زر «أرسل التطبيق لصديق»'],['install','📲 دليل التثبيت على الآيفون'],['edi','🧱 حرفة البناء'],['MA','🇲🇦 المغرب'],['FR','🇫🇷 فرنسا']];
+var FLAGS=[['photos','🖼️ صور القطع'],['prices','💶 قسم الأسعار'],['calc','🧮 الحاسبة'],['tech','📐 دليل القطع التقني'],['panel','⚡ رسم اللوحة الكهربائية'],['pros','🤝 المهنيون الموثوقون'],['share','📤 زر «أرسل التطبيق لصديق»'],['install','📲 دليل التثبيت على الآيفون'],['edi','🧱 حرفة البناء'],['MA','🇲🇦 المغرب'],['FR','🇫🇷 فرنسا']];
 function rc(){if(!data.rc)data.rc={};var r=data.rc;r.flags=r.flags||{};r.over=r.over||{};r.add=r.add||{};return r}
 function fShow(){var r=rc();$('fList').innerHTML=FLAGS.map(function(f){return '<label class="sw"><span>'+f[1]+'</span><input type="checkbox" data-fl="'+f[0]+'"'+(r.flags[f[0]]===false?'':' checked')+'></label>'}).join('')}
 $('fSave').onclick=function(){var r=rc();document.querySelectorAll('[data-fl]').forEach(function(c){if(c.checked)delete r.flags[c.dataset.fl];else r.flags[c.dataset.fl]=false});save('لوحة التحكم: تشغيل/إيقاف')};

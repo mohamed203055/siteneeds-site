@@ -326,6 +326,27 @@ html .paper select,html[data-theme] .paper select{background:transparent!importa
 .when{margin:0 0 12px}.when>span{display:block;font-weight:800;font-size:14px;margin:0 4px 6px}.when .chips{gap:6px}
 .paper .when{margin:14px 0 0}.paper .when>span{color:#14213D}.paper .when .chip{background:#fff;color:#14213D;border-color:#D9E1F0}.paper .when .chip.on{background:#0E2A5C;color:#fff;border-color:#0E2A5C}
 .tgl{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14px}.tgl input{width:22px;height:22px;flex:none}
+.tgbox{background:var(--card);border-radius:18px;box-shadow:0 2px 12px var(--shadow);padding:12px 12px 10px}.tgbox>b{display:block;font-size:15px;margin-bottom:4px}
+.tgrow{margin-top:8px}.tgrow>span{display:block;font-size:12px;color:var(--sub);margin:0 2px 4px}.tgrow .chips{gap:6px}.tgrow .chip{padding:6px 11px;font-size:13px}
+.tgres{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13.5px}.tgres button{color:var(--danger);font-weight:700;font-size:13px}
+.tcard{background:var(--card);border-radius:18px;box-shadow:0 2px 12px var(--shadow);padding:12px 14px;margin-bottom:10px}
+.th1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.tb{font-weight:900;color:var(--brand);font-size:14px}.tr{font-weight:800;background:var(--ghost);border-radius:8px;padding:2px 8px;font-size:13px}.tc{margin-inline-start:auto;font-size:11.5px;color:var(--sub);background:var(--hl);border-radius:8px;padding:2px 8px}
+.tn{font-weight:700;font-size:14.5px;margin-top:6px;line-height:1.35}
+.tbadges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.tbadges span{font-size:12.5px;font-weight:700;background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:3px 8px}
+.tact{display:flex;gap:8px;margin-top:10px}.tact .btn{margin:0;padding:10px 6px;font-size:13.5px;flex:1;width:auto}
+.tgc{border-color:#FFE7B0}.pnc{border-color:#C9DBFF}
+.pnact{margin:4px 0 10px}
+.pnwrap{background:#fff;border-radius:18px;box-shadow:0 2px 12px var(--shadow);overflow:auto;-webkit-overflow-scrolling:touch;padding:6px}
+.pnin.z{width:210%}
+.pngo{display:flex;gap:8px}.pngo .btn{flex:1;margin:0;width:auto}
+.pnlist{background:var(--card);border-radius:18px;box-shadow:0 2px 12px var(--shadow);overflow:hidden}
+.pnrow{display:grid;grid-template-columns:42px 1fr;gap:2px 8px;width:100%;text-align:start;padding:10px 14px;border-bottom:1px solid var(--line);background:none;color:var(--ink)}
+.pnrow:last-child{border-bottom:0}.pnrow b{grid-row:span 2;color:var(--brand);font-size:15px;align-self:center}.pnrow span{font-weight:700;font-size:14.5px}.pnrow i{font-style:normal;font-size:12.5px;color:var(--sub);text-align:start}
+.pnempty{background:var(--card);border-radius:18px;box-shadow:0 2px 12px var(--shadow);padding:22px 18px;text-align:center}.pnempty .big{font-size:46px}.pnempty p{color:var(--sub);line-height:1.5;margin:8px 0 14px}
+.pnct{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 2px;border-bottom:1px solid var(--line)}.pnct small{color:var(--sub);font-size:11.5px;display:block}
+.pnq{display:flex;align-items:center;gap:10px}.pnq button{width:34px;height:34px;border-radius:10px;background:var(--ghost);font-size:20px;font-weight:800;color:var(--ink)}.pnq b{min-width:18px;text-align:center}
+.pnadd{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pnadd .btn{margin:0;width:auto}
+#sheet .inp{width:100%}
 /* splash */
 .splash{position:fixed;inset:0;z-index:300;background:radial-gradient(120% 80% at 50% 20%,#1B3A8C 0%,#0B1530 55%,#060B1A 100%);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .45s ease}
 .splash.off{opacity:0}
@@ -412,7 +433,7 @@ html .paper select,html[data-theme] .paper select{background:transparent!importa
 <input type="file" id="fileJson" accept="*/*" style="display:none">
 
 <script>window.LM_STATS=window.LM_STATS||"talabmawad";/* codice GoatCounter */</script>
-<script>window.LM_RELEASE=1;window.LM_JS_VER=71</script>
+<script>window.LM_RELEASE=1;window.LM_JS_VER=74</script>
 <script src="catalog.js"></script>
 <script src="packs.js"></script>
 <script src="trades.js"></script>
