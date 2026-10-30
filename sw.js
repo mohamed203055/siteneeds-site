@@ -1,5 +1,5 @@
 // Funziona anche senza internet: i file restano in cache, e si aggiornano in background
-var CACHE='lm-79';
+var CACHE='lm-80';
 var FILES=["./", "index.html", "catalog.js", "packs.js", "lang.js", "app.js", "html2canvas.min.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(FILES)}).then(function(){return self.skipWaiting()}))});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(x){return x!==CACHE}).map(function(x){return caches.delete(x)}))}).then(function(){return self.clients.claim()}))});
